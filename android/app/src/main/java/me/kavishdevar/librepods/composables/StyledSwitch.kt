@@ -120,9 +120,10 @@ fun StyledSwitch(
                     val targetFrac = if (checked) 1f else 0f
                     animatedFraction.animateTo(targetFrac, progressAnimationSpec)
                 }
+                if (progressAnimation.value > 0f) return@coroutineScope
                 launch {
-                    progressAnimation.animateTo(1f, tween(100, easing = FastOutSlowInEasing))
-                    progressAnimation.animateTo(0f, tween(100, easing = FastOutSlowInEasing))
+                    progressAnimation.animateTo(1f, tween(175, easing = FastOutSlowInEasing))
+                    progressAnimation.animateTo(0f, tween(175, easing = FastOutSlowInEasing))
                 }
             }
         }
