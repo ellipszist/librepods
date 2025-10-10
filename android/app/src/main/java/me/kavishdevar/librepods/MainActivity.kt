@@ -117,6 +117,7 @@ import me.kavishdevar.librepods.screens.HearingAidAdjustmentsScreen
 import me.kavishdevar.librepods.screens.HearingAidScreen
 import me.kavishdevar.librepods.screens.LongPress
 import me.kavishdevar.librepods.screens.Onboarding
+import me.kavishdevar.librepods.screens.OpenSourceLicensesScreen
 import me.kavishdevar.librepods.screens.RenameScreen
 import me.kavishdevar.librepods.screens.TransparencySettingsScreen
 import me.kavishdevar.librepods.screens.TroubleshootingScreen
@@ -397,6 +398,9 @@ fun Main() {
                 }
                 composable("camera_control") {
                     CameraControlScreen(navController)
+                }
+                composable("open_source_licenses") {
+                    OpenSourceLicensesScreen(navController)
                 }
             }
         }

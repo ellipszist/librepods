@@ -196,7 +196,7 @@ object MediaController {
                 }
             }
 
-            lastKnownIsMusicActive = isActive
+            lastKnownIsMusicActive = hasNewMusicOrMovie && isActive
         }
     }
 

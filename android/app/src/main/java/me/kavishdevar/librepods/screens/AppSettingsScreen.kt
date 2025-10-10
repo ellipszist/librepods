@@ -648,6 +648,15 @@ fun AppSettingsScreen(navController: NavController) {
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            NavigationButton(
+                to = "open_source_licenses",
+                name = stringResource(R.string.open_source_licenses),
+                navController = navController,
+                independent = true
+            )
+
             Spacer(modifier = Modifier.height(32.dp))
 
             if (showResetDialog.value) {
