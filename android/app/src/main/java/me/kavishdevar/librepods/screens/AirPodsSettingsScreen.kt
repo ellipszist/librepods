@@ -65,11 +65,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kyant.backdrop.backdrops.rememberLayerBackdrop
 import com.kyant.backdrop.drawBackdrop
 import com.kyant.backdrop.highlight.Highlight
+import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import kotlinx.coroutines.launch
@@ -78,6 +81,7 @@ import me.kavishdevar.librepods.composables.AboutCard
 import me.kavishdevar.librepods.composables.AudioSettings
 import me.kavishdevar.librepods.composables.BatteryView
 import me.kavishdevar.librepods.composables.CallControlSettings
+import me.kavishdevar.librepods.composables.ConfirmationDialog
 import me.kavishdevar.librepods.composables.ConnectionSettings
 import me.kavishdevar.librepods.composables.HearingHealthSettings
 import me.kavishdevar.librepods.composables.MicrophoneSettings
@@ -212,6 +216,10 @@ fun AirPodsSettingsScreen(dev: BluetoothDevice?, service: AirPodsService,
     }
 
     val darkMode = isSystemInDarkTheme()
+    val hazeStateS = remember { mutableStateOf(HazeState()) }
+
+    val showDialog = remember { mutableStateOf(!sharedPreferences.getBoolean("donationDialogShown", false)) }
+
     StyledScaffold(
         title = deviceName.text,
         actionButtons = listOf(
@@ -226,6 +234,7 @@ fun AirPodsSettingsScreen(dev: BluetoothDevice?, service: AirPodsService,
         ),
         snackbarHostState = snackbarHostState
     ) { spacerHeight, hazeState ->
+        hazeStateS.value = hazeState
         if (isLocallyConnected || isRemotelyConnected) {
             val instance = service.airpodsInstance
             if (instance == null) {
@@ -339,6 +348,7 @@ fun AirPodsSettingsScreen(dev: BluetoothDevice?, service: AirPodsService,
                             Highlight.Ambient.copy(alpha = 0f)
                         }
                     )
+                    .hazeSource(hazeState)
                     .padding(horizontal = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -405,6 +415,25 @@ fun AirPodsSettingsScreen(dev: BluetoothDevice?, service: AirPodsService,
             }
         }
     }
+    ConfirmationDialog(
+        showDialog = showDialog,
+        title = stringResource(R.string.support_librepods),
+        message = stringResource(R.string.support_dialog_description),
+        confirmText = stringResource(R.string.support_me) + " \uDBC0\uDEB5",
+        dismissText = stringResource(R.string.never_show_again),
+        onConfirm = {
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                "https://github.com/sponsors/kavishdevar".toUri()
+            )
+            context.startActivity(browserIntent)
+            sharedPreferences.edit { putBoolean("donationDialogShown", true) }
+        },
+        onDismiss = {
+            sharedPreferences.edit { putBoolean("donationDialogShown", true) }
+        },
+        hazeState = hazeStateS.value,
+    )
 }
 
 @Preview

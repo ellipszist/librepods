@@ -180,7 +180,13 @@ fun ConfirmationDialog(
                                 .background(if (leftPressed) pressedColor else Color.Transparent),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(dismissText, color = accentColor)
+                            Text(
+                                text = dismissText,
+                                style = TextStyle(
+                                    color = accentColor,
+                                    fontFamily = FontFamily(Font(R.font.sf_pro))
+                                )
+                            )
                         }
                         Box(
                             modifier = Modifier
@@ -195,7 +201,13 @@ fun ConfirmationDialog(
                                 .background(if (rightPressed) pressedColor else Color.Transparent),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(confirmText, color = accentColor)
+                            Text(
+                                text = confirmText,
+                                style = TextStyle(
+                                    color = accentColor,
+                                    fontFamily = FontFamily(Font(R.font.sf_pro))
+                                )
+                            )
                         }
                     }
                 }
